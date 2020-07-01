@@ -8,7 +8,8 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${file} rollout_bot rollout_bot",
+            "program": "${file}",
+            "args" : ["rollout_bot", "rollout_bot"],
             "console": "integratedTerminal"
         }
     ]
