@@ -6,6 +6,10 @@ from math import sqrt, log
 num_nodes = 1000
 explore_faction = 2.
 
+def find_confidence_num(node):
+    return (node.wins/node.visits) + explore_faction * sqrt((log(node.parent.visits))/node.visits)
+
+
 def traverse_nodes(node, board, state, identity):
     """ Traverses the tree until the end criterion are met.
 
@@ -20,12 +24,22 @@ def traverse_nodes(node, board, state, identity):
     """
     # Uses upper confidence bound to either exploit or explore new nodes
     # Traverse down tree with biasing choice for child nodes until leaf node and return
+    maxNumber = 0
+    maxNode = node
+    while not maxNode.child_nodes: # Iterates to last level or when not empty
+        for childNode in node.child_nodes:
+            if find_confidence_num(childNode) > maxNumber:
+                maxNumber = find_confidence_num(childNode)
+                maxNode = childNode
 
-
-
+    return maxNode
     
-    pass
     # Hint: return leaf_node
+
+    # if move == "q":
+    # 	exit(2)
+    # action = board.pack_action(move)
+    # if board.is_legal(state, action):
 
 
 def expand_leaf(node, board, state):
@@ -42,8 +56,13 @@ def expand_leaf(node, board, state):
 
     # Create new node (random state) and return the node
 
+    # Check to see if node is terminating
+    moves = node.untried_actions
+    next_move = choice(moves)
+    newState = board.next_state(state, next_move)
+    new_node = MCTSNode(node, next_move, board.legal_actions(newState))
+    return new_node
 
-    pass
     # Hint: return new_node
 
 
@@ -59,7 +78,7 @@ def rollout(board, state):
     # From random state play random game and record win rate?
     # Play k random games and record the win rate to visit rate of the new node?
 
-    pass
+    
 
 
 def backpropagate(node, won):
@@ -89,6 +108,10 @@ def think(board, state):
     identity_of_bot = board.current_player(state)
     root_node = MCTSNode(parent=None, parent_action=None, action_list=board.legal_actions(state))
 
+    # Passes in the current state of game with the action list 
+
+    # Iterates through number of playthroughs(?)
+    
     for step in range(num_nodes):
         # Copy the game for sampling a playthrough
         sampled_game = state
@@ -97,6 +120,17 @@ def think(board, state):
         node = root_node
 
         # Do MCTS - This is all you!
+        max_node = traverse_nodes(node, board, sampled_game, "red")
+        new_node = expand_leaf(max_node, board, sampled_game)
+        rollout(board, sampled_game)
+        # Save results of rollout in some type of data
+        # For results in rollout_result:
+        #   backprogagate (new_node, won)
+
+
+        tempNode = traverse_nodes(node, board, state, identity)
+
+        
 
     # Return an action, typically the most frequently used action (from the root) or the action with the best
     # estimated win rate.
