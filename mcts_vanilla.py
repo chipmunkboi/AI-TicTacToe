@@ -29,7 +29,7 @@ def traverse_nodes(node, board, state, identity):
     maxNumber = 0
     maxNode = node
 
-    for childNode in node.child_nodes:
+    for childNode in node.child_nodes.values():
         if find_confidence_num(childNode) > maxNumber and childNode.visits > 0:
             maxNumber = find_confidence_num(childNode)
             maxNode = childNode
@@ -59,10 +59,11 @@ def expand_leaf(node, board, state):
     # Create new node (random state) and return the node
 
     # Check to see if node is terminating
-    moves = node.untried_actions
-    next_move = choice(moves)
-    newState = board.next_state(state, next_move)
-    new_node = MCTSNode(node, next_move, board.legal_actions(newState))
+    next_move = choice(node.untried_actions)
+    node.untried_actions.remove(next_move)
+    # newState = board.next_state(state, next_move)
+    new_node = MCTSNode(node, next_move, node.untried_actions) #Since we removed the action to untried action it consists of the rest of possible board actions
+    node.child_nodes[next_move] = new_node # Set action to new node
     return new_node
 
     # Hint: return new_node
@@ -78,14 +79,10 @@ def rollout(board, state):
     """
     # Play a random games and check win or lose in think()
 
-    wins = 0
-    visits = 0
-
     while board.is_ended(state) == False:
             actions = board.legal_actions(state)
             state = board.next_state(state, choice(actions))
-
-    # return board.points_values(state)
+    return board.points_values(state)
 
 
     
@@ -101,9 +98,11 @@ def backpropagate(node, won):
     """
 
     # Go back up to the root node (starting state) while updating win/visit values of every node along path
-
-    pass
-
+    while node != None:
+        if won == 1:
+            node.wins = node.wins + 1
+        node.visits = node.visits + 1
+        node = node.parent
 
 def think(board, state):
     """ Performs MCTS by sampling games and calling the appropriate functions to construct the game tree.
@@ -121,30 +120,56 @@ def think(board, state):
     # Passes in the current state of game with the action list 
 
     # Iterates through number of playthroughs(?)
-    
     for step in range(num_nodes):
         # Copy the game for sampling a playthrough
         sampled_game = state
-
         # Start at root
         node = root_node
-
         # Do MCTS - This is all you!
-
-        while node.untried_actions and not node.child_nodes:
-            node.visits = node.visits + 1 
-            max_node = traverse_nodes(node, board, sampled_game, identity_of_bot)
-            if node.parent_action:
-                board.next_state
-        new_node = expand_leaf(max_node, board, sampled_game)
-        rollout(board, sampled_game)
-        # Save results of rollout in some type of data
-        # For results in rollout_result:
-        #   backprogagate (new_node, won)
-
-
+        #print("ONE FOR LOOP FOR ONE SIMULATION")
         
+        # Selection process
+        # Search for node that has untried actions and no child nodes (find a leaf node that is valid)
+        # and traverse one level towards most promising child node
+        while not node.untried_actions and node.child_nodes:
+            #print("Traversing\n")
+            node.visits = node.visits + 1
+            node = traverse_nodes(node, board, sampled_game, identity_of_bot)
+            # If parent_action of the leaf node exists then update state
+            if node.parent_action:
+                sampled_game = board.next_state(sampled_game, node.parent_action)
+
+
+        # Expansion process 
+        # To add a new child node to the leaf node to run a random playout from there
+        if node.untried_actions:
+            #print("Expanding\n")
+            node = expand_leaf(node, board, sampled_game)
+            #print("Parent node is: " + str(node.parent_action) + "\n")
+            # node = traverse_nodes(node, board, sampled_game, identity_of_bot)
+            sampled_game = board.next_state(sampled_game, node.parent_action)
+
+
+        # Rollout process
+        # result = board.points_values(state) # {1:-1, 2: 1} player 1 loses and player 2 win
+        result = rollout(board, sampled_game)
+        #print("result of playout is "+str(result))
+        if identity_of_bot == 1:
+            win_state = result[1]
+        elif identity_of_bot == 2:
+            win_state = result[2]
+
+
+        # Backpropagagate process
+        backpropagate(node, win_state)
+
 
     # Return an action, typically the most frequently used action (from the root) or the action with the best
     # estimated win rate.
-    return None
+
+    bestScore = 0
+    for child in root_node.child_nodes.values():
+        if (child.wins/child.visits) > bestScore:
+            bestScore = child.wins/child.visits
+            bestMove = child.parent_action
+    return bestMove

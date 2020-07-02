@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "p3_play with vanilla and random bot",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "args" : ["rollout_bot", "rollout_bot"],
+            "program": "G://.shortcut-targets-by-id/1JC9O2hLXKztIZnYM-gCgmcIYVwiAYxps/CMPM146/gameai-p3/p3_play.py",
+            "args" : ["rollout_bot", "mcts_vanilla"],
             "console": "integratedTerminal"
         }
     ]
