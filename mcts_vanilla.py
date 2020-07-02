@@ -120,7 +120,7 @@ def think(board, state):
     # Passes in the current state of game with the action list 
 
     # Iterates through number of playthroughs(?)
-    for step in range(num_nodes):
+    for step in range(5000):
         # Copy the game for sampling a playthrough
         sampled_game = state
         # Start at root
