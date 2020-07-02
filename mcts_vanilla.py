@@ -131,15 +131,17 @@ def think(board, state):
 
         # Do MCTS - This is all you!
 
-        max_node = traverse_nodes(node, board, sampled_game, identity_of_bot)
+        while node.untried_actions and not node.child_nodes:
+            node.visits = node.visits + 1 
+            max_node = traverse_nodes(node, board, sampled_game, identity_of_bot)
+            if node.parent_action:
+                board.next_state
         new_node = expand_leaf(max_node, board, sampled_game)
         rollout(board, sampled_game)
         # Save results of rollout in some type of data
         # For results in rollout_result:
         #   backprogagate (new_node, won)
 
-
-        tempNode = traverse_nodes(node, board, state, identity)
 
         
 
