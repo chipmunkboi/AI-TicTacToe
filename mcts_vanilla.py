@@ -3,7 +3,7 @@ from mcts_node import MCTSNode
 from random import choice
 from math import sqrt, log
 
-num_nodes = 1000
+num_nodes = 100
 explore_faction = 2.
 
 # Given a node returns the confidence interval
@@ -120,7 +120,7 @@ def think(board, state):
     # Passes in the current state of game with the action list 
 
     # Iterates through number of playthroughs(?)
-    for step in range(5000):
+    for step in range(num_nodes):
         # Copy the game for sampling a playthrough
         sampled_game = state
         # Start at root
