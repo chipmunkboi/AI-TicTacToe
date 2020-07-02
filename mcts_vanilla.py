@@ -6,6 +6,7 @@ from math import sqrt, log
 num_nodes = 1000
 explore_faction = 2.
 
+# Given a node returns the confidence interval
 def find_confidence_num(node):
     return (node.wins/node.visits) + explore_faction * sqrt((log(node.parent.visits))/node.visits)
 
@@ -24,13 +25,14 @@ def traverse_nodes(node, board, state, identity):
     """
     # Uses upper confidence bound to either exploit or explore new nodes
     # Traverse down tree with biasing choice for child nodes until leaf node and return
+    
     maxNumber = 0
     maxNode = node
-    while not maxNode.child_nodes: # Iterates to last level or when not empty
-        for childNode in node.child_nodes:
-            if find_confidence_num(childNode) > maxNumber:
-                maxNumber = find_confidence_num(childNode)
-                maxNode = childNode
+
+    for childNode in node.child_nodes:
+        if find_confidence_num(childNode) > maxNumber and childNode.visits > 0:
+            maxNumber = find_confidence_num(childNode)
+            maxNode = childNode
 
     return maxNode
     
@@ -74,9 +76,17 @@ def rollout(board, state):
         state:  The state of the game.
 
     """
+    # Play a random games and check win or lose in think()
 
-    # From random state play random game and record win rate?
-    # Play k random games and record the win rate to visit rate of the new node?
+    wins = 0
+    visits = 0
+
+    while board.is_ended(state) == False:
+            actions = board.legal_actions(state)
+            state = board.next_state(state, choice(actions))
+
+    # return board.points_values(state)
+
 
     
 
@@ -120,7 +130,8 @@ def think(board, state):
         node = root_node
 
         # Do MCTS - This is all you!
-        max_node = traverse_nodes(node, board, sampled_game, "red")
+
+        max_node = traverse_nodes(node, board, sampled_game, identity_of_bot)
         new_node = expand_leaf(max_node, board, sampled_game)
         rollout(board, sampled_game)
         # Save results of rollout in some type of data
