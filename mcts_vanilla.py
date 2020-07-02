@@ -168,6 +168,7 @@ def think(board, state):
     # estimated win rate.
 
     bestScore = 0
+    bestMove = choice(board.legal_actions(state))
     for child in root_node.child_nodes.values():
         if (child.wins/child.visits) > bestScore:
             bestScore = child.wins/child.visits

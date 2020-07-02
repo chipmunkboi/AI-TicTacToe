@@ -3,7 +3,7 @@ from mcts_node import MCTSNode
 from random import choice
 from math import sqrt, log
 
-num_nodes = 200
+num_nodes = 1000
 explore_faction = 2.
 
 # Given a node returns the confidence interval
@@ -168,6 +168,7 @@ def think(board, state):
     # estimated win rate.
 
     bestScore = 0
+    bestMove = choice(board.legal_actions(state))
     for child in root_node.child_nodes.values():
         if (child.wins/child.visits) > bestScore:
             bestScore = child.wins/child.visits
