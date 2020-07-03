@@ -129,7 +129,7 @@ def think(board, state):
         #print("ONE FOR LOOP FOR ONE SIMULATION")
         
         # Selection process
-        # Search for node that has untried actions and no child nodes (find a leaf node that is valid)
+        # While node that has untried actions and no child nodes call traverse and update sampled game
         # and traverse one level towards most promising child node
         while not node.untried_actions and node.child_nodes:
             #print("Traversing\n")
