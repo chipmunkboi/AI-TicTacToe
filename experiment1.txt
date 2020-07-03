@@ -1,0 +1,3 @@
+The attached Experiment_1_plot.png shows the plot of games
+won by MCTS_vanilla at 1000, 800, 600, 400, 200, 100, 50, and 10
+verses MCTS vanilla at a fixed 100 simulations per turn. 

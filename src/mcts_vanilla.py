@@ -3,7 +3,7 @@ from mcts_node import MCTSNode
 from random import choice
 from math import sqrt, log
 
-num_nodes = 1000
+num_nodes = 600
 explore_faction = 2.
 
 # Given a node returns the confidence interval
