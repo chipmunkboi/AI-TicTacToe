@@ -78,10 +78,19 @@ def rollout(board, state):
 
     """
     # Play a random games and check win or lose in think()
-
+    # action = (1, 2, 3, 4) --> list[i]action[2] = 3, action[3] = 4
+    
     while board.is_ended(state) == False:
-            actions = board.legal_actions(state)
+        betterAction = False
+        actions = board.legal_actions(state)
+        for currAction in actions:
+            if(currAction[2] == 1 and currAction[3] == 1):
+                state = board.next_state(state, currAction)
+                betterAction = True
+        
+        if(betterAction == False):
             state = board.next_state(state, choice(actions))
+
     return board.points_values(state)
 
 
