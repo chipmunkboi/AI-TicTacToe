@@ -27,7 +27,7 @@ This python program implements [Monte Carlo Tree Search](https://en.wikipedia.or
 3. For example, if you want to play the random bot against the MCTS vanilla bot then type ``` python p3_sim.py random_bot mcts_vanilla```
 
 
-### Parameters that can be changed
+## Parameters that can be changed
 1. Number of simulations can be adjusted as ```num_nodes = x ``` where ```x > 0``` on line 7 of both ```mcts_vanilla.py``` and ```mcts_modified.py```
 2. [Exploration Parameter](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search#Exploration_and_exploitation) can be adjusted as ```explore_faction = x``` where ```x = ~(1.4)``` on line 8 of both ```mcts_vanilla.py``` and ```mcts_modified.py```.
 3. Number of simulations in ```p3_sim.py``` can be adjusted as ```rounds = x``` where ```x > 1``` on line 35 of ```p3_sim.py```.
