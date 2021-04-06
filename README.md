@@ -34,7 +34,7 @@ This python program implements [Monte Carlo Tree Search](https://en.wikipedia.or
 
 
 ## Testing results
-![100 simulations vs x simulations](https://github.com/chipmunkboi/AI-TicTacToe/blob/master/Experiment_1_plot.png?raw=true)
+![100 simulations vs x simulations](https://github.com/chipmunkboi/AI-TicTacToe/blob/master/background/Experiment_1_plot.png?raw=true)
 
 #### Analysis
 The attached Experiment_1_plot.png shows the plot of games
