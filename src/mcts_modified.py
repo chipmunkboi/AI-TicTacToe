@@ -3,7 +3,7 @@ from random import choice
 from math import sqrt, log
 
 num_nodes = 600
-explore_faction = 2.
+explore_faction = 1.4
 
 # Given a node returns the confidence interval
 def find_confidence_num(node):
@@ -77,7 +77,7 @@ def rollout(board, state):
 
     """
     # Play a random games and check win or lose in think()
-    # action = (1, 2, 3, 4) --> list[i]action[2] = 3, action[3] = 4
+    # action = (1, 2, 3, 4) --> list[i]; action[2] = 3, action[3] = 4
     
     while board.is_ended(state) == False:
         betterAction = False

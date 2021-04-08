@@ -3,7 +3,7 @@ from random import choice
 from math import sqrt, log
 
 num_nodes = 600
-explore_faction = 2.
+explore_faction = 1.4
 
 # Given a node returns the confidence interval
 def find_confidence_num(node):
