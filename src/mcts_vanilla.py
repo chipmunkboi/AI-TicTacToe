@@ -1,4 +1,3 @@
-
 from mcts_node import MCTSNode
 from random import choice
 from math import sqrt, log
